@@ -33,12 +33,12 @@
         </div>
     </header>
 
-    <h1>Это новость с id =  <?= $newsItem['id'] ?></h1>
+    <h1>Это новость с id = {{ $news->id }}  </h1>
 
     <div>
-        <strong> <?= $newsItem['title'] ?> </strong>
-        <p><?= $newsItem['description'] ?></p>
-        <em><?= $newsItem['author'] ?></em>
+        <strong> {{ $news->title }} </strong>
+        <p> {{ $news->description }} </p>
+        <em> {{ $news->author }}</em>
         <hr>
     </div>
 
