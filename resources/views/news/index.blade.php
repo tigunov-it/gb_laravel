@@ -13,11 +13,11 @@
 
 @section('content')
 
-    @if(empty($news))
+    @if(empty($newsList))
         <h3>Новостей нет</h3>
     @else
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            @foreach($news as $newsItem)
+            @foreach($newsList as $news)
 
                 <div class="card-group">
                     <div class="card shadow-sm">
@@ -31,12 +31,12 @@
                         <div class="card-body">
                             <div class="card-header">
                                 <strong> <a
-                                        href="{{ route('news.show', ['id' => $newsItem['id']]) }} "> {{ $newsItem['title'] }} </a>
+                                        href="{{ route('news.show', ['id' => $news->id]) }} "> {{ $news->title }} </a>
                                 </strong>
                             </div>
-                            <p class="card-text">{{ $newsItem['description'] }}</p>
+                            <p class="card-text">{{ $news->description }}</p>
                         </div>
-                        <div class="card-footer">Author: {{ $newsItem['author'] }}
+                        <div class="card-footer">Author: {{ $news->author }}
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
