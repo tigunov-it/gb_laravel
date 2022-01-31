@@ -40,7 +40,8 @@ Route::get('/contacts/', function () {
 Route::get('/news', [NewsController::class, 'index'])
     ->name('news.index');
 Route::get('/news/{id}', [NewsController::class, 'show'])
-    ->where('id', '\d+') // делаем исключения - если вместо id не число, то будет выдана 404 ошибка
+    ->where('news', '\d+')
+//    ->where('id', '\d+') // делаем исключения - если вместо id не число, то будет выдана 404 ошибка
     ->name('news.show');
 
 // Admin Routes
@@ -50,6 +51,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::resource('/news', AdminNewsController::class);
 });
 
+ Route::get('collection', function () {
+     $array = ['Anna', 'Olga', 'Elena', 'Denis'];
+     $collection = collect($array);
+     dd($collection);
+ });
 
 
 
