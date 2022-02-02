@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\News\CreateRequest;
+use App\Http\Requests\News\EditRequest;
 use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
-use Psy\Util\Str;
+
 
 class NewsController extends Controller
 {
@@ -42,15 +44,11 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param CreateRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $request->validate([
-            'title' => ['required', 'string', 'min:5']
-        ]);
-
 
         $created = News::create(
             $request->only(['category_id', 'title', 'author', 'status', 'description']) + [
@@ -86,21 +84,23 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
+        $categories = Category::all();
         $news = News::findOrFail($id);
 
         return view('admin.news.edit', [
-            'news' => $news
+            'news' => $news,
+            'categories' => $categories
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param EditRequest $request
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EditRequest $request, $id)
     {
         $news = News::findOrFail($id);
 

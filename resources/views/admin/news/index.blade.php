@@ -29,7 +29,8 @@
             @forelse($newsList as $news)
                 <tr>
                     <td>{{ $news->id }}</td>
-                    <td>{{ optional($news->category)->title }}</td> // Добавляем optional - если связи не будет, чтобы не сломалась страница
+{{--                    Добавляем optional - если связи не будет, чтобы не сломалась страница--}}
+                    <td>{{ optional($news->category)->title }}</td>
                     <td>{{ $news->title }}</td>
                     <td>{{ $news->status }}</td>
                     <td>{{ $news->description }}</td>
