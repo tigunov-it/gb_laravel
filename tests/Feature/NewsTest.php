@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\News;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -43,12 +44,18 @@ class NewsTest extends TestCase
 
     public function testNewsAdminCreated()
     {
-        $responseData = [
-            'title' => 'Some title',
-            'author' => 'Admin',
-            'status' => 'Draft',
-            'description' => 'Some text'
-        ];
+        $responseData = News::factory()->create([
+            'title' => 'Some title'
+        ]);
+
+        dd($responseData);
+
+//        $responseData = [
+//            'title' => 'Some title',
+//            'author' => 'Admin',
+//            'status' => 'Draft',
+//            'description' => 'Some text'
+//        ];
 
         $response = $this->post(route('admin.news.store'), $responseData );
 
