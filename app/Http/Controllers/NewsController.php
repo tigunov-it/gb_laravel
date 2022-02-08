@@ -9,24 +9,28 @@ class NewsController extends Controller
 {
     public function index()
     {
-        $model = new News();
-        $news = $model->getNews();
+
+        $news = News::query()->get(); // Выбираем все поля. Через select([имена полей]) можно выбрать конкретные поля
 
         return view('news.index', [
             'newsList' => $news
         ]);
     }
 
+// !! не работает - страницу открывает, а саму новость не выводит. В чем ошибка?
+//    public function show(News $news) {
+//
+//        return view('news.show', [
+//            'news' => $news
+//        ]);
+//    }
+
     public function show(int $id)
     {
-        if($id > 10) {
-            abort(404);
-        }
-
-        $model = new News();
+        $news = News::findOrFail($id);
 
         return view('news.show', [
-            'news' => $model->getNewsById($id)
+            'news' => $news
         ]);
     }
 }

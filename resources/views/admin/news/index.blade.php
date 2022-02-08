@@ -11,12 +11,13 @@
 
 @section('content')
     <div class="table-responsive">
-
+        @include('inc.message')
         <table class="table table-bordered">
 
             <thead>
             <tr>
                 <th>Id</th>
+                <th>Категория</th>
                 <th>Заголовок</th>
                 <th>Статус</th>
                 <th>Описание</th>
@@ -28,6 +29,7 @@
             @forelse($newsList as $news)
                 <tr>
                     <td>{{ $news->id }}</td>
+                    <td>{{ optional($news->category)->title }}</td> // Добавляем optional - если связи не будет, чтобы не сломалась страница
                     <td>{{ $news->title }}</td>
                     <td>{{ $news->status }}</td>
                     <td>{{ $news->description }}</td>
@@ -42,7 +44,7 @@
             </tbody>
 
         </table>
-
+        {{ $newsList->links()  }}
     </div>
 @endsection
 
