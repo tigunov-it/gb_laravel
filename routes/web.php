@@ -2,9 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\NewsController;
+use \App\Http\Controllers\SocialController;
+use \App\Http\Controllers\Admin\ParserController;
 use \App\Http\Controllers\Account\IndexController as AccountController;
 use \App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use \App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
         return redirect()->route('login');
     })->name('account.logout');
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function () {
+        Route::get('/parser', ParserController::class)->name('parser');
         Route::view('/', 'admin.index')->name('index');
         Route::resource('/categories', AdminCategoryController::class);
         Route::resource('/news', AdminNewsController::class);
@@ -77,3 +81,9 @@ Route::get('/session', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Подключаем Oauth. network - facebook, github, вконтакте и т.д
+Route::group(['middleware' => 'guest', 'prefix' => 'auth', 'as' => 'social.'], function (){
+    Route::get('/{network}/redirect', [SocialController::class, 'redirect'])->name('redirect');
+    Route::get('/{network}/callback', [SocialController::class, 'callback'])->name('callback');
+});

@@ -8,6 +8,7 @@
                 <div class="card-header">{{ __('Вход') }}</div>
 
                 <div class="card-body">
+                    <a href="{{route('social.redirect', ['network' => 'facebook'])}}">Войти через facebook</a>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
