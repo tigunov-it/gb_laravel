@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,7 @@ use PhpParser\Builder;
 
 class News extends Model
 {
-    use HasFactory;
+    use HasFactory, Sluggable;
 
     protected $table = 'news';
 
@@ -20,7 +21,8 @@ class News extends Model
         'slug',
         'author',
         'status',
-        'description'
+        'description',
+        'image'
     ];
 
     // Можно указать исключения полей
@@ -28,7 +30,7 @@ class News extends Model
 //      'id'
 //    ];
 
-    protected $availableFields = ['id', 'title', 'author', 'status', 'description', 'created_at']; // можно использовать данную переменную в запросах для того, чтобы указывать конкретные поля базы данных
+    protected $availableFields = ['id', 'title', 'author', 'status', 'description', 'image', 'created_at']; // можно использовать данную переменную в запросах для того, чтобы указывать конкретные поля базы данных
 
     public function getNews(): array
     {
@@ -46,5 +48,14 @@ class News extends Model
     public function category(): BelongsTo
     {
         return$this->belongsTo(Category::class, "category_id", 'id');
+    }
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
     }
 }

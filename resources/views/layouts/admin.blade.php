@@ -80,6 +80,7 @@
         crossorigin="anonymous"></script>
 
 <script src="{{ asset('scripts/dashboard.js')}}"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/32.0.0/classic/ckeditor.js"></script>
 
 @stack('js')
 
