@@ -7,6 +7,7 @@ use App\Http\Requests\News\CreateRequest;
 use App\Http\Requests\News\EditRequest;
 use App\Models\Category;
 use App\Models\News;
+use App\Services\UploadService;
 use Illuminate\Http\Request;
 
 
@@ -98,15 +99,24 @@ class NewsController extends Controller
      *
      * @param EditRequest $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(EditRequest $request, $id)
+    public function update(EditRequest $request, News $news)
     {
-        $news = News::findOrFail($id);
 
-        $updated = $news->fill($request->only(['category_id', 'title', 'author', 'status', 'description']) + [
-            'slug' => \Str::slug($request->input('title'))
-        ])->save();
+        $validated = $request->validated();
+
+        if($request->hasFile('image')) {
+          $validated['image'] = app(UploadService::class)->start($request->file('image'));
+        }
+
+
+//        $updated = $news->fill($request->only(['category_id', 'title', 'author', 'status', 'description']) + [
+//            'slug' => \Str::slug($request->input('title'))
+//        ])->save();
+
+        $updated = $news->fill($validated)->save();
+
 
         if ($updated) {
             return redirect()->route('admin.news.index')

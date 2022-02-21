@@ -43,7 +43,7 @@ Route::get('/contacts/', function () {
 
 Route::get('/news', [NewsController::class, 'index'])
     ->name('news.index');
-Route::get('/news/{id}', [NewsController::class, 'show'])
+Route::get('/news/{news}', [NewsController::class, 'show'])
     ->where('news', '\d+')
 //    ->where('id', '\d+') // делаем исключения - если вместо id не число, то будет выдана 404 ошибка
     ->name('news.show');

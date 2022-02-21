@@ -10,7 +10,7 @@
 @section('content')
     <div>
         @include('inc.message')
-        <form method="post" action="{{route('admin.news.update', ['news' => $news])}}">
+        <form method="post" action="{{route('admin.news.update', ['news' => $news])}}" enctype="multipart/form-data">
             @csrf
             @method('put')
             <div class="form-group">
@@ -43,6 +43,14 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="image">Изображение</label>
+                {{-- file link --}}
+{{--                {{ Storage::disk('public')->url($news->image) }}--}}
+                <img src="{{ Storage::disk('public')->url($news->image) }}" alt="Фото новости" style="width: 200px;"> &nbsp;
+                <a href="javascript:;">[X]</a>
+                <input type="file" class="form-control" id="author" name="image">
+            </div>
+            <div class="form-group">
                 <label for="description">Описание</label>
                 <textarea class="form-control" name="description"
                           id="description"> {!! $news->description !!} </textarea>
@@ -53,3 +61,13 @@
         </form>
     </div>
 @endsection
+@push('js')
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '#description' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+
+@endpush
