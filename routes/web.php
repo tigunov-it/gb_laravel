@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\NewsController;
+use \App\Http\Controllers\Account\IndexController as AccountController;
 use \App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use \App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 
@@ -24,7 +25,7 @@ Route::get('/', function () {
 //    return "Hello, {$name}";
 //});
 
-Route::get('/about/', function ( ) {
+Route::get('/about/', function () {
     return "Информация о проекте";
 });
 
@@ -45,17 +46,34 @@ Route::get('/news/{id}', [NewsController::class, 'show'])
     ->name('news.show');
 
 // Admin Routes
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
-    Route::view('/', 'admin.index')->name('index');
-    Route::resource('/categories', AdminCategoryController::class);
-    Route::resource('/news', AdminNewsController::class);
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/account', AccountController::class)->name('account');
+    Route::get('/account/logout', function (){
+        \Auth::logout();
+        return redirect()->route('login');
+    })->name('account.logout');
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function () {
+        Route::view('/', 'admin.index')->name('index');
+        Route::resource('/categories', AdminCategoryController::class);
+        Route::resource('/news', AdminNewsController::class);
+    });
 });
 
- Route::get('collection', function () {
-     $array = ['Anna', 'Olga', 'Elena', 'Denis'];
-     $collection = collect($array);
-     dd($collection);
- });
+Route::get('collection', function () {
+    $array = ['Anna', 'Olga', 'Elena', 'Denis'];
+    $collection = collect($array);
+    dd($collection);
+});
 
+Route::get('/session', function () {
+    if (session()->has('title')) {
+        dd(session()->all(), session()->get('title'));
+        session()->forget('title');
+    }
 
+    session(['title' => 'name']);
+});
 
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -127,6 +127,13 @@ class NewsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $news = News::findOrFail($id);
+
+        try {
+            $news->delete();
+            return response()->json('ok');
+        } catch (\Exception $e) {
+            \Log::error("Error dalete news item");
+        }
     }
 }
